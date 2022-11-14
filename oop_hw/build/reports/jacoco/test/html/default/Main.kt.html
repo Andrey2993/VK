@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">oop_hw</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Main.kt</span></div><h1>Main.kt</h1><pre class="source lang-java linenums">import javax.xml.stream.events.Comment
+
+//Р—Р°РґР°С‡Р° в„–1. РџРѕСЃС‚С‹
+<span class="nc" id="L4">data class Comment (</span>
+<span class="nc" id="L5">    val id: Int = 0,</span>
+<span class="nc" id="L6">    val fromId: Int = 0,</span>
+<span class="nc" id="L7">    val date: Int = 1,</span>
+<span class="nc" id="L8">    val text: String = &quot;Comment text&quot;,</span>
+<span class="nc" id="L9">    val replyToUser: Int = 1,</span>
+<span class="nc" id="L10">    val replyToComment: Int = 1,</span>
+<span class="nc" id="L11">)</span>
+
+<span class="nc" id="L13">data class Views (</span>
+<span class="nc" id="L14">    val count: Int</span>
+)
+
+<span class="pc" id="L17">data class Comments (</span>
+<span class="pc" id="L18">    val count: Int = 0,</span>
+<span class="pc" id="L19">    val canPost: Boolean = true,</span>
+<span class="pc" id="L20">    val groupsCanPost: Boolean = true,</span>
+<span class="pc" id="L21">    val canClose: Boolean = true,</span>
+<span class="pc" id="L22">    val canOpen: Boolean = true</span>
+<span class="nc" id="L23">)</span>
+
+<span class="pc" id="L25">data class Likes (</span>
+<span class="pc" id="L26">    val count: Int = 0,</span>
+<span class="pc" id="L27">    val userLikes: Int = 0,</span>
+<span class="pc" id="L28">    val canLike: Boolean = true,</span>
+<span class="pc" id="L29">    val canPublish: Boolean = true</span>
+<span class="nc" id="L30">)</span>
+
+
+<span class="pc" id="L33">data class Post(</span>
+<span class="pc" id="L34">    var id: Int = 0, //Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїРёСЃРё</span>
+<span class="pc" id="L35">    val ownerId: Int = 0, //Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РІР»Р°РґРµР»СЊС†Р° СЃС‚РµРЅС‹, РЅР° РєРѕС‚РѕСЂРѕР№ СЂР°Р·РјРµС‰РµРЅР° Р·Р°РїРёСЃСЊ</span>
+<span class="pc" id="L36">    val fromId: Int = 0, //Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р°РІС‚РѕСЂР° Р·Р°РїРёСЃРё</span>
+<span class="pc" id="L37">    val createdBy: Int = 0, //Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°, РєРѕС‚РѕСЂС‹Р№ РѕРїСѓР±Р»РёРєРѕРІР°Р» Р·Р°РїРёСЃСЊ</span>
+<span class="pc" id="L38">    val date: Long = System.currentTimeMillis() / 1000L, //Р’СЂРµРјСЏ РїСѓР±Р»РёРєР°С†РёРё Р·Р°РїРёСЃРё</span>
+<span class="pc" id="L39">    val text: String, //РўРµРєСЃС‚ Р·Р°РїРёСЃРё</span>
+<span class="pc" id="L40">    val replyOwnerId: Int = 0, //Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РІР»Р°РґРµР»СЊС†Р° Р·Р°РїРёСЃРё, РІ РѕС‚РІРµС‚ РЅР° РєРѕС‚РѕСЂСѓСЋ Р±С‹Р»Р° РѕСЃС‚Р°РІР»РµРЅР° С‚РµРєСѓС‰Р°СЏ</span>
+<span class="pc" id="L41">    val replyPostId: Int = 0, //Р�РґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїРёСЃРё, РІ РѕС‚РІРµС‚ РЅР° РєРѕС‚РѕСЂСѓСЋ Р±С‹Р»Р° РѕСЃС‚Р°РІР»РµРЅР° С‚РµРєСѓС‰Р°СЏ</span>
+<span class="pc" id="L42">    val friendsOnly: Boolean = true, //Р•СЃР»Рё Р·Р°РїРёСЃСЊ Р±С‹Р»Р° СЃРѕР·РґР°РЅР° СЃ РѕРїС†РёРµР№ &quot;С‚РѕР»СЊРєРѕ РґР»СЏ РґСЂСѓР·РµР№&quot;</span>
+<span class="pc" id="L43">    val comments: Comments = Comments(), //Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ РєРѕРјРјРµРЅС‚Р°СЂРёСЏС… Рє Р·Р°РїРёСЃРё, РѕР±СЉРµРєС‚ СЃ РїРѕР»СЏРјРё</span>
+<span class="pc" id="L44">    val likes: Likes = Likes(), //Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ Р»Р°Р№РєР°С… Рє Р·Р°РїРёСЃРё, РѕР±СЉРµРєС‚ СЃ РїРѕР»СЏРјРё</span>
+<span class="pc" id="L45">    val reposts: Int = 0, //Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ СЂРµРїРѕСЃС‚Р°С… Р·Р°РїРёСЃРё (СЂР°СЃСЃРєР°Р·Р°С‚СЊ РґСЂСѓР·СЊСЏРј), РѕР±СЉРµРєС‚ СЃ РїРѕР»СЏРјРё</span>
+<span class="pc" id="L46">    val views: Int = 0, //Р�РЅС„РѕСЂРјР°С†РёСЏ Рѕ РїСЂРѕСЃРјРѕС‚СЂР°С… Р·Р°РїРёСЃРё. РћР±СЉРµРєС‚ СЃ РµРґРёРЅСЃС‚РІРµРЅРЅС‹Рј РїРѕР»РµРј</span>
+<span class="pc" id="L47">    val postType: String = &quot;post&quot;, //РўРёРї Р·Р°РїРёСЃРё, РјРѕР¶РµС‚ РїСЂРёРЅРёРјР°С‚СЊ СЃР»РµРґСѓСЋС‰РёРµ Р·РЅР°С‡РµРЅРёСЏ: post, copy, reply, postpone, suggest</span>
+<span class="nc" id="L48">)</span>
+
+
+object WallService {
+<span class="fc" id="L52">    private var posts = emptyArray&lt;Post&gt;()</span>
+
+    fun add(newPost: Post): Post {
+<span class="fc bfc" id="L55" title="All 6 branches covered.">        if (posts.isNotEmpty()) {</span>
+<span class="fc" id="L56">            newPost.id = posts.lastIndex + 2</span>
+        } else
+<span class="fc" id="L58">            newPost.id = 1</span>
+<span class="fc" id="L59">        posts += newPost</span>
+<span class="fc" id="L60">        return posts.last()</span>
+    }
+
+    fun update(currentPost: Post): Boolean {
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        for ((index, post) in posts.withIndex()) {</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">            if (post.id == currentPost.id) {</span>
+<span class="nc" id="L66">                posts[index] = currentPost</span>
+<span class="nc" id="L67">                return true</span>
+            }
+        }
+<span class="fc" id="L70">        return false</span>
+    }
+}
+
+
+fun main(args: Array&lt;String&gt;) {
+<span class="nc" id="L76">    val firstPost = Post(</span>
+<span class="nc" id="L77">        0,</span>
+<span class="nc" id="L78">        10,</span>
+<span class="nc" id="L79">        10,</span>
+<span class="nc" id="L80">        10,</span>
+<span class="nc" id="L81">        60,</span>
+<span class="nc" id="L82">        &quot;РџСЂРѕРІРµСЂРєР° СЂР°Р±РѕС‚С‹!&quot;,</span>
+<span class="nc" id="L83">        10,</span>
+<span class="nc" id="L84">        143,</span>
+<span class="nc" id="L85">        true,</span>
+<span class="nc" id="L86">        Comments(100, canPost = true, groupsCanPost = true, canClose = true, canOpen = true),</span>
+<span class="nc" id="L87">        Likes(300, userLikes = 1, canLike = true, canPublish = true),</span>
+<span class="nc" id="L88">        1,</span>
+<span class="nc" id="L89">        500,</span>
+<span class="nc" id="L90">        &quot;reply&quot;</span>
+    )
+
+<span class="nc" id="L93">    WallService.add(firstPost)</span>
+<span class="nc" id="L94">    WallService.update(firstPost)</span>
+<span class="nc" id="L95">    println(firstPost)</span>
+<span class="nc" id="L96">}</span>
+//gradle test jacocoTestReport
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
